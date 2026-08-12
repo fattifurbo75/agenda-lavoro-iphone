@@ -752,7 +752,7 @@ function bindDayRoller(){
 }
 
 function setupIPhoneMode(){
-  const mobile=window.matchMedia && window.matchMedia('(max-width:700px)').matches;
+  const mobile=(window.matchMedia&&window.matchMedia('(max-width:700px)').matches) || ((navigator.maxTouchPoints||0)>0 && window.innerWidth<=1024);
   document.body.classList.toggle('iphoneDayFirst',!!mobile);
   const modeBtn=$('mode');
   if(mobile && modeBtn){

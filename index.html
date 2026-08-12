@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0c0c0e"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Agenda Lavoro">
 <title>Agenda Lavoro Cloud Definitiva</title>
 <style>
@@ -366,94 +366,411 @@ box-shadow:0 0 4px rgba(255,255,255,.7)}
 }
 .pwaInstallBtn:hover{filter:brightness(1.06);transform:translateY(-1px)}
 
-/* iPhone / mobile edition */
-.mobileTools{display:none}
+
+
+/* ===== AGENDA LAVORO — TRUE iPHONE UI ===== */
 @media (max-width:700px){
-  html,body{width:100%;height:100%;overflow:hidden}
-  body{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
-  .app{height:100%;min-height:100%;width:100%}
-  .sidebar{display:none!important}
-  .main{width:100%;min-width:0;height:100%;display:flex}
-  .header{
-    height:auto;min-height:64px;flex:0 0 auto;
-    padding:8px 10px calc(8px + env(safe-area-inset-top));
-    gap:6px;position:sticky;top:0;
-    box-shadow:0 1px 0 rgba(0,0,0,.05)
+  :root{
+    --mobile-bg:#f5f4f1;
+    --mobile-card:#ffffff;
+    --mobile-ink:#111113;
+    --mobile-muted:#777772;
+    --mobile-line:#e6e4df;
+    --mobile-gold:#c79a4b;
   }
-  .header .navBtn{width:40px;height:40px;flex:0 0 40px;font-size:22px}
-  .titleBlock{flex:1;min-width:0}
-  .header .title{font-size:18px;line-height:1.05}
-  .header .sub{font-size:9px;margin-top:2px}
-  .header .grow{display:none}
-  .header #testSound,.header #today,.header #volumeRange,
-  .header>div[style*="background:#ecebe7"]{display:none!important}
-  .mobileTools{display:flex;gap:5px;order:5}
+
+  html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:var(--mobile-bg);
+    -webkit-text-size-adjust:100%;
+  }
+
+  body{
+    padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  }
+
+  .app{
+    display:block!important;
+    width:100%;
+    height:100dvh;
+    min-height:100dvh;
+    overflow:hidden;
+    background:var(--mobile-bg);
+  }
+
+  /* Desktop rail disappears completely on iPhone. */
+  .rail,.sidebar{
+    display:none!important;
+  }
+
+  .main{
+    display:flex!important;
+    flex-direction:column;
+    width:100%;
+    height:100%;
+    min-width:0;
+    overflow:hidden;
+  }
+
+  .topbar,.header{
+    position:relative!important;
+    top:auto!important;
+    height:auto!important;
+    min-height:64px;
+    flex:0 0 auto;
+    padding:10px 14px 9px!important;
+    padding-top:calc(10px + env(safe-area-inset-top))!important;
+    background:rgba(255,255,255,.96)!important;
+    border-bottom:1px solid var(--mobile-line)!important;
+    box-shadow:none!important;
+    z-index:20;
+    gap:8px!important;
+  }
+
+  .title-block,.titleBlock{
+    flex:1!important;
+    min-width:0!important;
+  }
+
+  .title,.header .title{
+    font-size:19px!important;
+    line-height:1.1!important;
+    font-weight:900!important;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .subtitle,.sub{
+    display:block!important;
+    margin-top:3px!important;
+    font-size:10px!important;
+    color:var(--mobile-muted)!important;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .controls{
+    display:flex!important;
+    align-items:center;
+    gap:5px!important;
+    flex:0 0 auto;
+  }
+
+  .controls .chip{
+    width:36px!important;
+    min-width:36px!important;
+    height:36px!important;
+    padding:0!important;
+    border-radius:11px!important;
+    font-size:18px!important;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .controls .chip:nth-child(2){
+    width:auto!important;
+    min-width:46px!important;
+    padding:0 9px!important;
+    font-size:10px!important;
+  }
+
+  .controls .add,.add{
+    width:42px!important;
+    height:42px!important;
+    min-width:42px!important;
+    font-size:25px!important;
+    border-radius:13px!important;
+    box-shadow:none!important;
+  }
+
+  /* If the newer header has day roller / mobile tools, make them touch-sized. */
+  .mobileTools{
+    display:flex!important;
+    gap:5px!important;
+  }
   .mobileTools button{
-    width:40px;height:40px;border:0;border-radius:12px;
-    background:#ecebe7;color:#202023;font-size:18px;font-weight:800
+    width:38px!important;
+    height:38px!important;
+    border-radius:11px!important;
+    font-size:17px!important;
   }
+
   .dayRollerBox{
     display:flex!important;
-    order:6;flex:0 0 146px;gap:2px;padding:2px;height:40px;border-radius:12px
+    flex:0 0 auto!important;
+    height:38px!important;
+    width:118px!important;
+    padding:2px!important;
+    border-radius:11px!important;
   }
-  .dayRoller{width:100px;height:34px;border-radius:11px}
-  .dayRollerArrow{width:24px;height:34px;border:0;border-radius:9px;font-size:18px}
-  .dayRollerTick{flex-basis:14px;width:14px}
-  .dayRollerTick:before{height:18px}
+
+  .dayRoller{
+    height:34px!important;
+    width:82px!important;
+    border-radius:9px!important;
+  }
+
+  .dayRollerArrow{
+    height:34px!important;
+    width:25px!important;
+    border-radius:8px!important;
+  }
+
   .modeBtn{
-    order:7;padding:0 9px;height:40px;flex:0 0 auto;
-    border-radius:12px;font-size:9px
+    display:none!important;
   }
-  .content{width:100%;min-width:0;overflow:auto;-webkit-overflow-scrolling:touch}
-  .weekView{padding:8px 8px calc(100px + env(safe-area-inset-bottom));min-width:0}
-  .weekHead,.weekView>.grid{min-width:740px}
-  .weekHead{grid-template-columns:45px repeat(7,minmax(100px,1fr))}
-  .weekView>.grid{grid-template-columns:45px repeat(7,minmax(100px,1fr))}
+
+  /* Main content becomes a real phone feed. */
+  .content,.calendar{
+    flex:1 1 auto!important;
+    width:100%!important;
+    min-width:0!important;
+    height:auto!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-y:contain;
+    background:var(--mobile-bg)!important;
+  }
+
+  /* Hide the giant 7-column desktop week grid on phones. */
+  .weekView,
+  .week,
+  .weekView>.grid,
+  .week.head{
+    display:none!important;
+  }
+
   .dayView{
-    padding:0 8px calc(100px + env(safe-area-inset-bottom));
-    min-width:0
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+    padding:0 12px calc(92px + env(safe-area-inset-bottom))!important;
+    background:var(--mobile-bg)!important;
   }
+
   .dayTop{
-    display:flex!important;align-items:center;justify-content:space-between;
-    padding:10px 4px 8px;gap:10px
+    display:flex!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    gap:10px!important;
+    padding:16px 3px 12px!important;
   }
-  .dayNum{font-size:46px!important;line-height:.95!important}
-  .dayDow{font-size:10px!important}
-  .dayMonth{font-size:15px!important}
-  .dayGrid{width:100%;min-width:0}
-  .dayTimelineWrap{grid-template-columns:54px 1fr;min-width:0}
-  .dayTime{font-size:9px;padding:8px 6px}
-  .dayLine{height:62px}
-  .dayTimeline{height:auto;min-height:682px}
-  .dayFloatingEvent,.dayAllDayFull{max-width:100%}
-  .dayFloatingEvent .event{padding:9px!important}
-  .actions{
-    left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));
-    justify-content:flex-end;gap:8px
+
+  .dayTop .dayNum,.dayNum{
+    font-size:48px!important;
+    line-height:.9!important;
+    font-weight:950!important;
+    letter-spacing:-2px!important;
   }
-  .pill{font-size:11px;padding:10px 13px}
-  .add{width:54px;height:54px}
-  .sheet{
-    width:100%;max-height:94vh;
-    padding:16px 14px calc(18px + env(safe-area-inset-bottom));
-    border-radius:22px 22px 0 0
+
+  .dayTop .dayDow,.dayDow{
+    font-size:11px!important;
+    letter-spacing:1.2px!important;
+    font-weight:900!important;
   }
-  .sheet h2{font-size:19px}
-  .grid2{grid-template-columns:1fr;gap:4px}
-  .field{margin-bottom:9px}
-  .cloudInput{font-size:16px!important}
-  .cloudActions{grid-template-columns:1fr!important}
-  .statsScreenBody{padding:12px 8px calc(30px + env(safe-area-inset-bottom))}
-  .statsTableWrap{overflow:auto;-webkit-overflow-scrolling:touch}
-  .statsTable{min-width:820px}
-  .statsScreenHeader{padding-top:calc(8px + env(safe-area-inset-top))}
-  /* On iPhone, start on the day view for the best single-day overview. */
-  body.iphoneDayFirst #weekView{display:none!important}
-  body.iphoneDayFirst #dayView{display:block!important}
+
+  .dayTop .dayMonth,.dayMonth{
+    font-size:14px!important;
+    font-weight:800!important;
+  }
+
+  .dayTimelineWrap{
+    display:grid!important;
+    grid-template-columns:48px minmax(0,1fr)!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+
+  .dayTime{
+    font-size:9px!important;
+    color:#8a8984!important;
+    padding:10px 5px!important;
+    text-align:right!important;
+  }
+
+  .dayTimeline{
+    width:100%!important;
+    min-width:0!important;
+    height:auto!important;
+  }
+
+  .dayLine{
+    height:64px!important;
+    min-height:64px!important;
+  }
+
+  .dayFloatingEvent,
+  .dayAllDayFull{
+    max-width:100%!important;
+    border-radius:13px!important;
+  }
+
+  .dayFloatingEvent .event,
+  .dayAllDayFull .event{
+    padding:11px 12px!important;
+    border-radius:13px!important;
+  }
+
+  .event .name{
+    font-size:14px!important;
+  }
+
+  .event .time{
+    font-size:9px!important;
+  }
+
+  /* Mobile action bar: always reachable by thumb. */
+  .actions,.bottom-bar{
+    position:fixed!important;
+    left:10px!important;
+    right:10px!important;
+    bottom:calc(8px + env(safe-area-inset-bottom))!important;
+    z-index:50!important;
+    min-height:60px!important;
+    padding:8px 10px!important;
+    border:1px solid var(--mobile-line)!important;
+    border-radius:18px!important;
+    background:rgba(255,255,255,.94)!important;
+    box-shadow:0 8px 30px rgba(0,0,0,.12)!important;
+    backdrop-filter:blur(18px);
+  }
+
+  .actions .pill,.pill{
+    min-height:42px!important;
+    border-radius:12px!important;
+    font-size:11px!important;
+  }
+
+  .actions .add,.actions .add{
+    width:48px!important;
+    height:48px!important;
+    min-width:48px!important;
+    border-radius:15px!important;
+  }
+
+  .legend,.status{
+    font-size:9px!important;
+  }
+
+  /* Forms become bottom sheets with iOS-sized inputs. */
+  .modalBackdrop,.backdrop{
+    align-items:flex-end!important;
+    padding:0!important;
+  }
+
+  .modal,.sheet{
+    width:100%!important;
+    max-width:none!important;
+    max-height:92dvh!important;
+    margin:0!important;
+    border-radius:22px 22px 0 0!important;
+    padding:18px 15px calc(18px + env(safe-area-inset-bottom))!important;
+    overflow-y:auto!important;
+  }
+
+  .modal input,.modal select,.modal textarea,
+  .sheet input,.sheet select,.sheet textarea,
+  input.input,select.select,textarea.textarea{
+    min-height:48px!important;
+    font-size:16px!important;
+    border-radius:13px!important;
+  }
+
+  .grid2{
+    grid-template-columns:1fr!important;
+  }
+
+  .form-actions,.cloudActions{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:8px!important;
+  }
+
+  .btn{
+    min-height:48px!important;
+    border-radius:13px!important;
+    font-size:14px!important;
+  }
+
+  /* Stats on iPhone: horizontal table scroll inside a fixed screen. */
+  .statsScreenBody{
+    overflow:auto!important;
+    padding:12px 10px calc(24px + env(safe-area-inset-bottom))!important;
+  }
+
+  .statsTableWrap{
+    width:100%!important;
+    overflow-x:auto!important;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  /* Larger hit targets throughout. */
+  button,a,input,select,textarea{
+    touch-action:manipulation;
+  }
 }
 
-/* Prevent accidental page scaling and improve touch behavior */
-button,.dayRoller,.dayRollerArrow{touch-action:manipulation}
+
+/* ===== iPHONE V3 — compact, no-overflow mobile shell ===== */
+@media (max-width:700px), (pointer:coarse) and (max-width:1024px){
+  html,body{width:100%!important;max-width:100%!important;overflow:hidden!important;overscroll-behavior:none!important;-webkit-text-size-adjust:100%!important}
+  body{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)!important}
+  .app,.main{width:100%!important;max-width:100%!important;min-width:0!important;overflow:hidden!important}
+
+  .header,.topbar{
+    display:flex!important;flex-wrap:wrap!important;align-items:center!important;
+    gap:7px!important;padding:calc(8px + env(safe-area-inset-top)) 10px 9px!important;
+    min-height:0!important;height:auto!important;box-sizing:border-box!important;
+  }
+  .header .navBtn#prevWeek,.header .navBtn#nextWeek{display:flex!important;flex:0 0 36px!important;width:36px!important;height:36px!important}
+  .header .titleBlock,.header .title-block,.topbar .titleBlock,.topbar .title-block{
+    order:1!important;flex:1 1 0!important;min-width:0!important;max-width:none!important;
+  }
+  .header .navBtn#prevWeek{order:0!important}.header .navBtn#nextWeek{order:2!important}
+  .header .title,.topbar .title{font-size:17px!important;line-height:1.05!important}
+  .header .sub,.topbar .sub{font-size:9px!important;margin-top:2px!important}
+  .header .grow{display:none!important}
+  .header #testSound,.header #volumeRange,.header>div[style*="background:#ecebe7"],.header #today{display:none!important}
+
+  .header .mobileTools{
+    order:10!important;display:flex!important;flex:0 0 auto!important;gap:5px!important;margin-left:0!important;
+  }
+  .header .mobileTools button{width:38px!important;height:38px!important;border-radius:11px!important;font-size:17px!important}
+  .header .dayRollerBox{
+    order:11!important;display:flex!important;flex:1 1 150px!important;width:auto!important;min-width:150px!important;
+    max-width:220px!important;height:38px!important;padding:2px!important;border-radius:11px!important;
+  }
+  .header .dayRoller{flex:1 1 auto!important;width:auto!important;height:34px!important}
+  .header .dayRollerArrow{flex:0 0 25px!important;width:25px!important;height:34px!important}
+  .header .modeBtn{display:none!important}
+
+  .content{width:100%!important;max-width:100%!important;min-width:0!important;overflow-y:auto!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch!important}
+  #weekView,.weekView,#weekView .weekHead,#weekView .grid,.weekView>.grid{display:none!important}
+  #dayView,.dayView{display:block!important;width:100%!important;min-width:0!important;padding:0 10px calc(88px + env(safe-area-inset-bottom))!important;box-sizing:border-box!important}
+  #dayView .dayTop{display:flex!important;padding:12px 2px 10px!important;align-items:center!important}
+  #dayView .dayNum{font-size:42px!important;letter-spacing:-1.5px!important}
+  #dayView .dayMonth{font-size:13px!important}
+  #dayGrid.dayTimelineWrap,.dayTimelineWrap{display:grid!important;grid-template-columns:48px minmax(0,1fr)!important;width:100%!important;min-width:0!important;height:auto!important}
+  #dayGrid .dayTime,#dayGrid .dayLine{height:58px!important;min-height:58px!important;box-sizing:border-box!important}
+  #dayGrid .dayTime{font-size:9px!important;padding:8px 5px!important;text-align:right!important}
+  #dayGrid .dayTimeline{width:100%!important;min-width:0!important;height:auto!important;position:relative!important}
+  #dayGrid .dayFloatingEvent,#dayGrid .dayAllDayFull{max-width:100%!important}
+
+  .actions{left:10px!important;right:10px!important;bottom:calc(8px + env(safe-area-inset-bottom))!important;justify-content:flex-end!important;gap:8px!important;z-index:100!important}
+  .actions .pill{height:48px!important;min-height:48px!important;padding:0 16px!important;border-radius:15px!important;font-size:13px!important}
+  .actions .add{width:52px!important;height:52px!important;min-width:52px!important;border-radius:16px!important;font-size:27px!important}
+
+  .overlay .sheet{width:100%!important;max-width:none!important;max-height:92dvh!important;border-radius:22px 22px 0 0!important;padding:18px 14px calc(18px + env(safe-area-inset-bottom))!important}
+  .accountView{padding:10px!important;align-items:flex-end!important}
+  .accountCard{width:100%!important;max-height:92dvh!important;border-radius:22px 22px 0 0!important;overflow:auto!important}
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="manifest" href="manifest.webmanifest">
@@ -1359,7 +1676,7 @@ function bindDayRoller(){
 }
 
 function setupIPhoneMode(){
-  const mobile=window.matchMedia && window.matchMedia('(max-width:700px)').matches;
+  const mobile=(window.matchMedia&&window.matchMedia('(max-width:700px)').matches) || ((navigator.maxTouchPoints||0)>0 && window.innerWidth<=1024);
   document.body.classList.toggle('iphoneDayFirst',!!mobile);
   const modeBtn=$('mode');
   if(mobile && modeBtn){

@@ -1,5 +1,5 @@
 
-const CACHE='agenda-lavoro-cloud-definitiva-v1';
+const CACHE='agenda-lavoro-cloud-definitiva-v3';
 const CORE=[
   './',
   './index.html',
