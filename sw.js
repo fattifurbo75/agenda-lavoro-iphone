@@ -1,8 +1,9 @@
 
-const CACHE='agenda-lavoro-cloud-definitiva-v3';
+const CACHE='agenda-lavoro-iphone-v5';
 const CORE=[
   './',
   './index.html',
+  './app.js',
   './manifest.webmanifest',
   './icons/icon-32.png',
   './icons/icon-192.png',

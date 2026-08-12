@@ -184,6 +184,68 @@ function renderMonth(){
   document.querySelectorAll('.mday').forEach(b=>b.onclick=()=>{selected=new Date(b.dataset.date+'T00:00:00');render();playWheelSound()});
 }
 
+
+function renderMobileMonth(){
+  const x=new Date(selected.getFullYear(),selected.getMonth(),1);
+  const daysInMonth=new Date(x.getFullYear(),x.getMonth()+1,0).getDate();
+  const rail=$('mobileMonthRail'),list=$('mobileMonthDays');
+  if(!rail||!list)return;
+
+  rail.innerHTML=`<div class="railMonth"><span>${M[x.getMonth()]} ${x.getFullYear()}</span></div>`;
+  let out='';
+  const todayKey=key(new Date());
+  for(let i=1;i<=daysInMonth;i++){
+    const d=new Date(x.getFullYear(),x.getMonth(),i);
+    const k=key(d);
+    const listEvents=dayEvents(d);
+    const selectedClass=k===key(selected)?' isSelected':'';
+    const todayClass=k===todayKey?' isToday':'';
+    const evHtml=listEvents.map(e=>{
+      const t=evType(e);
+      const titleIsType=(e.title||'').trim().toLowerCase()===t.label.toLowerCase();
+      const meta=e.allDay?'Tutto il giorno':(e.start?e.start+(e.end?' → '+e.end:''):'Tutto il giorno');
+      return `<div class="mobileMonthEvent" data-id="${e.id}" style="border-left-color:${t.color}">
+        ${titleIsType?'':`<div class="eventKind">${t.label}</div>`}
+        <div class="eventTitle" style="color:${t.color}">${esc(e.title)}</div>
+        <div class="eventMeta">${meta}${e.notes?' · '+esc(e.notes):''}</div>
+      </div>`;
+    }).join('');
+    out+=`<div class="mobileMonthDay${selectedClass}${todayClass}" data-date="${k}">
+      <div class="mobileDateRail">
+        <div class="mobileDateDow">${D[d.getDay()]}</div>
+        <div class="mobileDateNum">${i}</div>
+        <div class="mobileDateMonth">${M[d.getMonth()].slice(0,3)}</div>
+      </div>
+      <div class="mobileMonthContent">${evHtml||'<div class="mobileMonthEmpty"></div>'}</div>
+    </div>`;
+  }
+  list.innerHTML=out;
+  list.dataset.scrolled='0';
+
+  list.querySelectorAll('.mobileMonthDay').forEach(row=>{
+    row.addEventListener('click',e=>{
+      const k=row.dataset.date;
+      const card=e.target.closest('.mobileMonthEvent');
+      selected=new Date(k+'T00:00:00');
+      if(card){
+        const ev=(events[k]||[]).find(x=>x.id===card.dataset.id);
+        openSheet(k,ev);
+      }else{
+        render();
+      }
+      playWheelSound();
+    });
+  });
+  // Keep the selected day in view without forcing a jarring jump when opening the month.
+  requestAnimationFrame(()=>{
+    const sel=list.querySelector('.mobileMonthDay.isSelected');
+    if(sel && list.dataset.scrolled!=='1'){
+      sel.scrollIntoView({block:'center'});
+      list.dataset.scrolled='1';
+    }
+  });
+}
+
 function renderWeek(){
   $('weekView').style.display='block';$('dayView').style.display='none';$('mode').textContent='GIORNO';
   const ds=daysOfWeek(),m=ds[0];
@@ -347,7 +409,22 @@ function closeStats(){
   render();
 }
 
-function render(){renderMonth();if(mode==='stats')renderStats();else{if($('statsView'))$('statsView').style.display='none';if(mode==='day')renderDay();else renderWeek()}}
+function render(){
+  renderMonth();
+  const mobile=(window.matchMedia&&window.matchMedia('(max-width:700px)').matches) || ((navigator.maxTouchPoints||0)>0 && window.innerWidth<=1024);
+  document.body.classList.toggle('mobileMonthMode',!!mobile&&mode==='month');
+  document.body.classList.toggle('mobileDayMode',!!mobile&&mode==='day');
+  if(mode==='stats')renderStats();
+  else{
+    if($('statsView'))$('statsView').style.display='none';
+    if(mobile){
+      if(mode==='day')renderDay();else renderMobileMonth();
+    }else{
+      if(mode==='day')renderDay();else renderWeek();
+    }
+  }
+  if($('mode'))$('mode').textContent=mobile?(mode==='day'?'MESE':'GIORNO'):(mode==='day'?'SETTIMANA':'GIORNO');
+}
 function renderSummary(){
   const c={vacation:0,permit:0,sick:0,rest:0,personal:0,other:0};
   Object.values(events).flat().forEach(e=>{if(c[e.kind]!=null)c[e.kind]++});
@@ -376,7 +453,12 @@ function openSheet(k,e=null,start=''){
   document.querySelectorAll('.rem').forEach(b=>b.classList.toggle('active',b.dataset.r===reminder));
   $('overlay').classList.add('open');$('fTitle').focus();
 }
-function move(dir){if(mode==='day')selected.setDate(selected.getDate()+dir);else selected.setDate(selected.getDate()+dir*7);render();playWheelSound()}
+function move(dir){
+  if(mode==='day') selected.setDate(selected.getDate()+dir);
+  else if(mode==='month') selected.setMonth(selected.getMonth()+dir);
+  else selected.setDate(selected.getDate()+dir*7);
+  render();playWheelSound();
+}
 function toToday(){selected=new Date();selected.setHours(0,0,0,0);render();playWheelSound()}
 
 
@@ -597,7 +679,13 @@ function bindCloudUI(){
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindCloudUI);
 else bindCloudUI();
 
-$('mode').onclick=()=>{if(mode==='stats'){closeStats();playWheelSound();return}mode=mode==='day'?'week':'day';render();playWheelSound()};
+$('mode').onclick=()=>{
+  if(mode==='stats'){closeStats();playWheelSound();return}
+  const mobile=(window.matchMedia&&window.matchMedia('(max-width:700px)').matches) || ((navigator.maxTouchPoints||0)>0 && window.innerWidth<=1024);
+  if(mobile) mode=mode==='day'?'month':'day';
+  else mode=mode==='day'?'week':'day';
+  render();playWheelSound();
+};
 $('prevWeek').onclick=()=>move(-1);$('nextWeek').onclick=()=>move(1);
 $('today').onclick=toToday;$('todayPill').onclick=toToday;$('sideToday').onclick=toToday;
 $('add').onclick=()=>openSheet(key(selected));$('sideAdd').onclick=()=>openSheet(key(selected));
@@ -756,8 +844,8 @@ function setupIPhoneMode(){
   document.body.classList.toggle('iphoneDayFirst',!!mobile);
   const modeBtn=$('mode');
   if(mobile && modeBtn){
-    mode='day';
-    modeBtn.textContent='GIORNO';
+    if(mode!=='day'&&mode!=='month') mode='month';
+    modeBtn.textContent=mode==='day'?'MESE':'GIORNO';
   }
 }
 window.addEventListener('resize',setupIPhoneMode,{passive:true});

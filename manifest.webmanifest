@@ -1,13 +1,13 @@
 {
-  "name": "Agenda Lavoro Cloud Definitiva",
+  "name": "Agenda Lavoro",
   "short_name": "Agenda Lavoro",
   "description": "Agenda personale con sincronizzazione cloud.",
   "lang": "it-IT",
-  "start_url": "./index.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0c0c0e",
+  "background_color": "#f5f4f1",
   "theme_color": "#0c0c0e",
   "icons": [
     {
@@ -25,5 +25,6 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "id": "./"
 }
